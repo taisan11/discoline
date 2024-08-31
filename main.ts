@@ -20,6 +20,7 @@ const bot = createBot({
 bot.transformers.desiredProperties.message.guildId = true
 bot.transformers.desiredProperties.message.channelId = true
 bot.transformers.desiredProperties.message.content = true
+bot.transformers.desiredProperties.message.author = true
 
 bot.events.messageCreate = message => {
   console.log("messageCreate")
