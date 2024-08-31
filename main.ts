@@ -13,6 +13,21 @@ const bot = createBot({
     ready: data => {
       console.log(`The shard ${data.shardId} is ready!`)
     },
+    messageCreate(message) {
+      console.log("messageCreate")
+      if (!(message.guildId == BigInt(Deno.env.get("DISCORD_GUILD")!))) {
+        return
+      }
+      if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
+        return
+      }
+      console.log(message.author.bot)
+      if (message.author.bot) {
+        return
+      }
+      console.log(message.content)
+      lineNotify({message: message.content, token: Deno.env.get("LINE_Notification_Token")!})
+    }
   },
 })
 
@@ -21,22 +36,23 @@ bot.transformers.desiredProperties.message.guildId = true
 bot.transformers.desiredProperties.message.channelId = true
 bot.transformers.desiredProperties.message.content = true
 bot.transformers.desiredProperties.message.author = true
+bot.transformers.desiredProperties.message.id = true
 
-bot.events.messageCreate = message => {
-  console.log("messageCreate")
-  if (!(message.guildId == BigInt(Deno.env.get("DISCORD_GUILD")!))) {
-    return
-  }
-  if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
-    return
-  }
-  console.log(message.author.bot)
-  if (message.author.bot) {
-    return
-  }
-  console.log(message.content)
-  lineNotify({message: message.content, token: Deno.env.get("LINE_Notification_Token")!})
-}
+// bot.events.messageCreate = message => {
+//   console.log("messageCreate")
+//   if (!(message.guildId == BigInt(Deno.env.get("DISCORD_GUILD")!))) {
+//     return
+//   }
+//   if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
+//     return
+//   }
+//   console.log(message.author.bot)
+//   if (message.author.bot) {
+//     return
+//   }
+//   console.log(message.content)
+//   lineNotify({message: message.content, token: Deno.env.get("LINE_Notification_Token")!})
+// }
 
 import {Hono} from "hono"
 
