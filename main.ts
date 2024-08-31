@@ -1,3 +1,8 @@
+import {
+  MessageAPIResponseBase,
+  TextMessage,
+  WebhookEvent,
+} from "@line/bot-sdk";
 import "@std/dotenv/load";
 import { createBot, Intents } from '@discordeno/bot'
 import {lineNotify} from "./linenotify.ts"
@@ -25,9 +30,44 @@ bot.events.messageCreate = message => {
   if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
     return
   }
-  console.log("送信!!")
   console.log(message.content)
   lineNotify({message: message.content, token: Deno.env.get("LINE_Notification_Token")!})
 }
+
+import {Hono} from "hono"
+
+const app = new Hono()
+
+app.post("/api/webhook", async (c) => {
+  const data = await c.req.json();
+  const events: WebhookEvent[] = (data as any).events;
+
+  await Promise.all(
+    events.map(async (event: WebhookEvent) => {
+      try {
+        await textEventHandler(event);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err);
+        }
+        return c.json({
+          status: "error",
+        });
+      }
+    })
+  );
+  return c.json({ message: "ok" });
+})
+
+const textEventHandler = async (
+  event: WebhookEvent,
+): Promise<MessageAPIResponseBase | undefined> => {
+  if (event.type !== "message" || event.message.type !== "text") {
+    return;
+  }
+  await bot.helpers.sendMessage(BigInt(Deno.env.get("DISCORD_CHANNEL")!), { content: event.message.text })
+};
+
+Deno.serve()
 
 await bot.start()

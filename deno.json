@@ -3,10 +3,12 @@
     "dev": "deno run --watch main.ts"
   },
   "imports": {
+    "@discordeno/bot": "npm:@discordeno/bot",
+    "hono": "jsr:@hono/hono@^4.5.10",
+    "@line/bot-sdk": "npm:@line/bot-sdk@^9.3.1",
     "@std/assert": "jsr:@std/assert@1",
     "@std/cli": "jsr:@std/cli@^1.0.4",
     "@std/dotenv": "jsr:@std/dotenv@^0.225.1",
-    "ky": "npm:ky@^1.7.1",
-    "@discordeno/bot":"npm:@discordeno/bot"
+    "ky": "npm:ky@^1.7.1"
   }
 }
