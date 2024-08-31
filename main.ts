@@ -68,7 +68,8 @@ const textEventHandler = async (
   event: WebhookEvent,
 ): Promise<MessageAPIResponseBase | undefined> => {
   console.log(event.source.userId)
-  if (event.type !== "message" || event.message.type !== "text" || event.source.userId === "false") {
+  //@ts-ignore: 2339??
+  if (event.type !== "message" || event.message.type !== "text" || event.source.userId === false) {
     return;
   }
   await bot.helpers.sendMessage(BigInt(Deno.env.get("DISCORD_CHANNEL")!), { content: event.message.text })
