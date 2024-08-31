@@ -65,6 +65,7 @@ app.post("/api/webhook", async (c) => {
 const textEventHandler = async (
   event: WebhookEvent,
 ): Promise<MessageAPIResponseBase | undefined> => {
+  console.log(event.source.userId)
   if (event.type !== "message" || event.message.type !== "text" || event.source.type !== "user") {
     return;
   }
