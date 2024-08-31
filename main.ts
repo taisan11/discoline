@@ -21,7 +21,7 @@ const bot = createBot({
       if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
         return
       }
-      if (message.author.id.toString() === '1279217961361739866') return
+      if (message.author.id === BigInt(1279217961361739866)) return
       console.log(message.author.bot)
       if (message.author.bot) {
         return
