@@ -1,6 +1,5 @@
 import {
   MessageAPIResponseBase,
-  TextMessage,
   WebhookEvent,
 } from "@line/bot-sdk";
 import "@std/dotenv/load";
@@ -28,6 +27,9 @@ bot.events.messageCreate = message => {
     return
   }
   if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
+    return
+  }
+  if (message.author.bot) {
     return
   }
   console.log(message.content)
@@ -62,7 +64,7 @@ app.post("/api/webhook", async (c) => {
 const textEventHandler = async (
   event: WebhookEvent,
 ): Promise<MessageAPIResponseBase | undefined> => {
-  if (event.type !== "message" || event.message.type !== "text") {
+  if (event.type !== "message" || event.message.type !== "text" || event.source.type !== "user") {
     return;
   }
   await bot.helpers.sendMessage(BigInt(Deno.env.get("DISCORD_CHANNEL")!), { content: event.message.text })
