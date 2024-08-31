@@ -39,22 +39,6 @@ bot.transformers.desiredProperties.message.content = true
 bot.transformers.desiredProperties.message.author = true
 bot.transformers.desiredProperties.message.id = true
 
-// bot.events.messageCreate = message => {
-//   console.log("messageCreate")
-//   if (!(message.guildId == BigInt(Deno.env.get("DISCORD_GUILD")!))) {
-//     return
-//   }
-//   if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
-//     return
-//   }
-//   console.log(message.author.bot)
-//   if (message.author.bot) {
-//     return
-//   }
-//   console.log(message.content)
-//   lineNotify({message: message.content, token: Deno.env.get("LINE_Notification_Token")!})
-// }
-
 import {Hono} from "hono"
 
 const app = new Hono()
@@ -83,6 +67,7 @@ app.post("/api/webhook", async (c) => {
 const textEventHandler = async (
   event: WebhookEvent,
 ): Promise<MessageAPIResponseBase | undefined> => {
+  console.log(event.source.userId)
   if (event.type !== "message" || event.message.type !== "text" || !event.source.userId) {
     return;
   }
