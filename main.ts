@@ -69,7 +69,7 @@ const textEventHandler = async (
 ): Promise<MessageAPIResponseBase | undefined> => {
   console.log(event.source.userId)
   //@ts-ignore: 2339??
-  if (event.type !== "message" || event.message.type !== "text" || event.source.userId === "U5e7d90d692cfc949070fdac18473a472") {
+  if (event.type !== "message" || event.message.type !== "text" || event.source.userId === false) {
     return;
   }
   await bot.helpers.sendMessage(BigInt(Deno.env.get("DISCORD_CHANNEL")!), { content: event.message.text })
