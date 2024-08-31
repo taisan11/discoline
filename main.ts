@@ -29,7 +29,7 @@ bot.events.messageCreate = message => {
   if (!(message.channelId === BigInt(Deno.env.get("DISCORD_CHANNEL")!))) {
     return
   }
-  if (message.author.bot) {
+  if (message.author.id === bot.id) {
     return
   }
   console.log(message.content)
