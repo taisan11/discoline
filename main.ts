@@ -68,6 +68,6 @@ const textEventHandler = async (
   await bot.helpers.sendMessage(BigInt(Deno.env.get("DISCORD_CHANNEL")!), { content: event.message.text })
 };
 
-Deno.serve()
+Deno.serve(app.fetch)
 
 await bot.start()
